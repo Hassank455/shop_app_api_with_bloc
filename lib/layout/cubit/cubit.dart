@@ -4,8 +4,11 @@ import 'package:shop_app_moh_api/layout/cubit/states.dart';
 import 'package:shop_app_moh_api/models/categories_model.dart';
 import 'package:shop_app_moh_api/models/change_favorites_model.dart';
 import 'package:shop_app_moh_api/models/favorites_model.dart';
+import 'package:shop_app_moh_api/models/get_cart.dart';
 import 'package:shop_app_moh_api/models/home_model.dart';
+import 'package:shop_app_moh_api/models/in_cart_product_model.dart';
 import 'package:shop_app_moh_api/models/login_model.dart';
+import 'package:shop_app_moh_api/models/product_details_model.dart';
 import 'package:shop_app_moh_api/modules/cateogries/cateogries_screen.dart';
 import 'package:shop_app_moh_api/modules/favorites/favorites_screen.dart';
 import 'package:shop_app_moh_api/modules/products/products_screen.dart';
@@ -175,4 +178,53 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(ShopErrorUpdateUserState());
     });
   }
+
+  ProductDetailsModel? productDetailsModel;
+
+  void getProductDetails(int productID) {
+    emit(ShopLoadingGetProductDetailsState());
+    DioHelper.getData(
+      url: 'products/$productID',
+      token: token,
+    ).then((value) {
+      productDetailsModel = ProductDetailsModel.fromJson(value.data);
+      emit(ShopSuccessGetProductDetailsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetProductDetailsState());
+    });
+  }
+
+  AddToCart? addToCart;
+
+  void addProductToCart(int productID) {
+    emit(ShopLoadingAddProductToCartState());
+
+    DioHelper.postData(url: CART, token: token, data: {
+      'product_id': '$productID',
+    }).then((value) {
+      addToCart = AddToCart.fromJson(value.data);
+      print('${addToCart!.status}, Added Successfully.');
+      emit(ShopSuccessAddProductToCartState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorAddProductToCartState());
+    });
+  }
+
+  GetCart? getCart;
+
+  void getInCartProducts() {
+    emit(ShopLoadingGetCartState());
+    DioHelper.getData(url: CART, token: token).then((value) {
+      getCart = GetCart.fromJson(value.data);
+      emit(ShopSuccessGetCartState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetCartState());
+    });
+  }
+
+
+
 }

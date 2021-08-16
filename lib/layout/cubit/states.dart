@@ -55,3 +55,21 @@ class ShopSuccessUpdateUserState extends ShopStates
 }
 
 class ShopErrorUpdateUserState extends ShopStates {}
+
+class ShopLoadingGetProductDetailsState extends ShopStates {}
+
+class ShopSuccessGetProductDetailsState extends ShopStates {}
+
+class ShopErrorGetProductDetailsState extends ShopStates {}
+
+class ShopLoadingAddProductToCartState extends ShopStates {}
+
+class ShopSuccessAddProductToCartState extends ShopStates {}
+
+class ShopErrorAddProductToCartState extends ShopStates {}
+
+class ShopLoadingGetCartState extends ShopStates {}
+
+class ShopSuccessGetCartState extends ShopStates {}
+
+class ShopErrorGetCartState extends ShopStates {}

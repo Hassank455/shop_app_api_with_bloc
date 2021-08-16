@@ -5,6 +5,7 @@ import 'package:shop_app_moh_api/layout/cubit/cubit.dart';
 import 'package:shop_app_moh_api/layout/cubit/states.dart';
 import 'package:shop_app_moh_api/models/categories_model.dart';
 import 'package:shop_app_moh_api/models/home_model.dart';
+import 'package:shop_app_moh_api/modules/products/product_details/product_details.dart';
 import 'package:shop_app_moh_api/shared/components/components.dart';
 import 'package:shop_app_moh_api/shared/styles/colors.dart';
 
@@ -66,6 +67,11 @@ class ProductsScreen extends StatelessWidget {
             SizedBox(
               height: 10.0,
             ),
+          /*  seeAll(
+                onPressed: ShopCubit.get(context).incIndex, title: 'Categories'),
+            SizedBox(
+              height: 10.0,
+            ),*/
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10.0,
@@ -124,7 +130,12 @@ class ProductsScreen extends StatelessWidget {
                 children: List.generate(
                   model.data!.products.length,
                   (index) =>
-                      buildGridProduct(model.data!.products[index], context),
+                      buildGridProduct(model.data!.products[index], context,(){
+                        ShopCubit.get(context).getProductDetails(model.data!.products[index].id!);
+                        //Navigator.of(context).pushNamed(ProductDetails.productDetailsScreen);
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductDetails()));
+                      }),
+
                 ),
               ),
             ),
@@ -159,95 +170,98 @@ class ProductsScreen extends StatelessWidget {
         ],
       );
 
-  Widget buildGridProduct(ProductModel model, context) => Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                Image(
-                  image: NetworkImage(model.image!),
-                  width: double.infinity,
-                  height: 200.0,
-                ),
-                if (model.discount != 0)
-                  Container(
-                    color: Colors.red,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 5.0,
-                    ),
-                    child: Text(
-                      'DISCOUNT',
-                      style: TextStyle(
-                        fontSize: 8.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildGridProduct(ProductModel model, context, void Function() onPressed) => InkWell(
+    onTap: onPressed,
+    child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.bottomStart,
                 children: [
-                  Text(
-                    model.name!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      height: 1.3,
-                    ),
+                  Image(
+                    image: NetworkImage(model.image!),
+                    width: double.infinity,
+                    height: 200.0,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        '${model.price.round()}',
+                  if (model.discount != 0)
+                    Container(
+                      color: Colors.red,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 5.0,
+                      ),
+                      child: Text(
+                        'DISCOUNT',
                         style: TextStyle(
-                          fontSize: 12.0,
-                          color: defaultColor,
+                          fontSize: 8.0,
+                          color: Colors.white,
                         ),
                       ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      if (model.discount != 0)
-                        Text(
-                          '${model.oldPrice.round()}',
-                          style: TextStyle(
-                            fontSize: 10.0,
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          ShopCubit.get(context).changeFavorites(model.id!);
-                          print(model.id);
-                        },
-                        icon: CircleAvatar(
-                          radius: 15.0,
-                          backgroundColor:
-                              ShopCubit.get(context).favorites[model.id]!
-                                  ? defaultColor
-                                  : Colors.grey,
-                          child: Icon(
-                            Icons.favorite_border,
-                            size: 14.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
                 ],
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      model.name!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        height: 1.3,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '${model.price.round()}',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: defaultColor,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        if (model.discount != 0)
+                          Text(
+                            '${model.oldPrice.round()}',
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            ShopCubit.get(context).changeFavorites(model.id!);
+                            print(model.id);
+                          },
+                          icon: CircleAvatar(
+                            radius: 15.0,
+                            backgroundColor:
+                                ShopCubit.get(context).favorites[model.id]!
+                                    ? defaultColor
+                                    : Colors.grey,
+                            child: Icon(
+                              Icons.favorite_border,
+                              size: 14.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-      );
+  );
 }

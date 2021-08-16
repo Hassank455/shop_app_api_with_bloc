@@ -250,3 +250,62 @@ Widget buildListProduct(
         ),
       ),
     );
+
+Widget buildAddToCartButton({
+  double? size = double.infinity,
+  required String label,
+  required void Function() onPressed,
+}) {
+  return Container(
+    width: size,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.all(20.0),
+        elevation: 10,
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.add_shopping_cart,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Text(label),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget seeAll({
+  required void Function() onPressed,
+  required String title,
+}) =>
+    InkWell(
+      onTap: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            'See all',
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.deepPurple,
+            ),
+          ),
+        ],
+      ),
+    );

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 class DioHelper {
   static Dio? dio;
 
-  static init()
-  {
+  static init() {
     dio = Dio(
       BaseOptions(
         baseUrl: 'https://student.valuxapps.com/api/',
@@ -19,12 +18,10 @@ class DioHelper {
     Map<String, dynamic>? query,
     String lang = 'en',
     String? token,
-  }) async
-  {
-    dio!.options.headers =
-    {
-      'lang':lang,
-      'Authorization': token??'',
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token ?? '',
       'Content-Type': 'application/json',
     };
 
@@ -40,12 +37,10 @@ class DioHelper {
     Map<String, dynamic>? query,
     String lang = 'en',
     String? token,
-  }) async
-  {
-    dio!.options.headers =
-    {
-      'lang':lang,
-      'Authorization': token??'',
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token ?? '',
       'Content-Type': 'application/json',
     };
 
@@ -62,12 +57,10 @@ class DioHelper {
     Map<String, dynamic>? query,
     String lang = 'en',
     String? token,
-  }) async
-  {
-    dio!.options.headers =
-    {
-      'lang':lang,
-      'Authorization': token??'',
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token ?? '',
       'Content-Type': 'application/json',
     };
 
@@ -77,4 +70,23 @@ class DioHelper {
       data: data,
     );
   }
+
+
+  static Future<Response> deleteData({
+    required String url,
+    Map<String, dynamic>? query,
+    String lang = 'en',
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      'Content-Type': 'application/json',
+      'lang': lang,
+      'Authorization': token ?? '',
+    };
+    return await dio!.delete(
+      url,
+      queryParameters: query,
+    );
+  }
+
 }
