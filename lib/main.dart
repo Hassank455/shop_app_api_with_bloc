@@ -23,11 +23,11 @@ void main() async {
   DioHelper.init();
   await CacheHelper.init();
 
-  bool isDark = CacheHelper.getData(key: 'isDark');
+  bool? isDark = CacheHelper.getData(key: 'isDark');
 
   Widget widget;
 
-  bool onBoarding = CacheHelper.getData(key: 'onBoarding');
+  bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token');
   print(token);
 
@@ -48,8 +48,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
-  final bool isDark;
-  final Widget startWidget;
+  final bool? isDark;
+  final Widget? startWidget;
 
   MyApp({
   this.isDark,

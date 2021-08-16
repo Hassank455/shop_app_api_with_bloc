@@ -8,8 +8,9 @@ Widget defaultButton({
   Color background = Colors.blue,
   bool isUpperCase = true,
   double radius = 3.0,
-  @required Function function,
-  @required String text,
+  required VoidCallback function,
+  //required Function function,
+  required String text,
 }) =>
     Container(
       width: width,
@@ -32,17 +33,17 @@ Widget defaultButton({
     );
 
 Widget defaultFormField({
-  @required TextEditingController controller,
-  @required TextInputType type,
-  Function onSubmit,
-  Function onChange,
-  Function onTap,
+  required TextEditingController controller,
+  required TextInputType type,
+  ValueChanged? onSubmit,
+  ValueChanged? onChange,
+  GestureTapCallback? onTap,
   bool isPassword = false,
-  @required Function validate,
-  @required String label,
-  @required IconData prefix,
-  IconData suffix,
-  Function suffixPressed,
+  required FormFieldValidator validate,
+  required String label,
+  required IconData prefix,
+  IconData? suffix,
+  VoidCallback? suffixPressed,
   bool isClickable = true,
 }) =>
     TextFormField(
@@ -72,8 +73,8 @@ Widget defaultFormField({
     );
 
 Widget defaultTextButton({
-  @required Function function,
-  @required String text,
+  required VoidCallback function,
+  required String text,
 }) =>
     TextButton(
       onPressed: function,
@@ -115,8 +116,8 @@ void navigateTo(context, widget) => Navigator.push(
     );
 
 void showToast({
-  @required String text,
-  @required ToastStates state,
+  required String text,
+  required ToastStates state,
 }) =>
     Fluttertoast.showToast(
       msg: text,
@@ -230,7 +231,7 @@ Widget buildListProduct(
                         icon: CircleAvatar(
                           radius: 15.0,
                           backgroundColor:
-                          ShopCubit.get(context).favorites[model.id]
+                          ShopCubit.get(context).favorites[model.id]!
                               ? defaultColor
                               : Colors.grey,
                           child: Icon(

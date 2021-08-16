@@ -1,4 +1,3 @@
-import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app_moh_api/layout/shop_layout.dart';
@@ -9,8 +8,7 @@ import 'package:shop_app_moh_api/shared/network/local/cache_helper.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
-class ShopRegisterScreen extends StatelessWidget
-{
+class ShopRegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
   var emailController = TextEditingController();
@@ -18,26 +16,21 @@ class ShopRegisterScreen extends StatelessWidget
   var phoneController = TextEditingController();
 
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => ShopRegisterCubit(),
       child: BlocConsumer<ShopRegisterCubit, ShopRegisterStates>(
-        listener: (context, state)
-        {
-          if (state is ShopRegisterSuccessState)
-          {
-            if (state.loginModel.status)
-            {
+        listener: (context, state) {
+          if (state is ShopRegisterSuccessState) {
+            if (state.loginModel.status!) {
               print(state.loginModel.message);
-              print(state.loginModel.data.token);
+              print(state.loginModel.data!.token);
 
               CacheHelper.saveData(
                 key: 'token',
-                value: state.loginModel.data.token,
-              ).then((value)
-              {
-                token = state.loginModel.data.token;
+                value: state.loginModel.data!.token,
+              ).then((value) {
+                token = state.loginModel.data!.token!;
 
                 navigateAndFinish(
                   context,
@@ -48,14 +41,13 @@ class ShopRegisterScreen extends StatelessWidget
               print(state.loginModel.message);
 
               showToast(
-                text: state.loginModel.message,
+                text: state.loginModel.message!,
                 state: ToastStates.ERROR,
               );
             }
           }
         },
-        builder: (context, state)
-        {
+        builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -69,15 +61,17 @@ class ShopRegisterScreen extends StatelessWidget
                       children: [
                         Text(
                           'REGISTER',
-                          style: Theme.of(context).textTheme.headline4.copyWith(
-                            color: Colors.black,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.headline4!.copyWith(
+                                    color: Colors.black,
+                                  ),
                         ),
                         Text(
                           'Register now to browse our hot offers',
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.grey,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.grey,
+                                  ),
                         ),
                         SizedBox(
                           height: 30.0,
@@ -85,7 +79,7 @@ class ShopRegisterScreen extends StatelessWidget
                         defaultFormField(
                           controller: nameController,
                           type: TextInputType.name,
-                          validate: (String value) {
+                          validate: (value) {
                             if (value.isEmpty) {
                               return 'please enter your name';
                             }
@@ -99,7 +93,7 @@ class ShopRegisterScreen extends StatelessWidget
                         defaultFormField(
                           controller: emailController,
                           type: TextInputType.emailAddress,
-                          validate: (String value) {
+                          validate: (value) {
                             if (value.isEmpty) {
                               return 'please enter your email address';
                             }
@@ -114,16 +108,13 @@ class ShopRegisterScreen extends StatelessWidget
                           controller: passwordController,
                           type: TextInputType.visiblePassword,
                           suffix: ShopRegisterCubit.get(context).suffix,
-                          onSubmit: (value)
-                          {
-
-                          },
+                          onSubmit: (value) {},
                           isPassword: ShopRegisterCubit.get(context).isPassword,
                           suffixPressed: () {
                             ShopRegisterCubit.get(context)
                                 .changePasswordVisibility();
                           },
-                          validate: (String value) {
+                          validate: (value) {
                             if (value.isEmpty) {
                               return 'password is too short';
                             }
@@ -137,7 +128,7 @@ class ShopRegisterScreen extends StatelessWidget
                         defaultFormField(
                           controller: phoneController,
                           type: TextInputType.phone,
-                          validate: (String value) {
+                          validate: (value) {
                             if (value.isEmpty) {
                               return 'please enter your phone number';
                             }
@@ -148,26 +139,22 @@ class ShopRegisterScreen extends StatelessWidget
                         SizedBox(
                           height: 30.0,
                         ),
-                        ConditionalBuilder(
-                          condition: state is! ShopRegisterLoadingState,
-                          builder: (context) => defaultButton(
-                            function: () {
-                              if (formKey.currentState.validate())
-                              {
-                                ShopRegisterCubit.get(context).userRegister(
-                                  name: nameController.text,
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  phone: phoneController.text,
-                                );
-                              }
-                            },
-                            text: 'register',
-                            isUpperCase: true,
-                          ),
-                          fallback: (context) =>
-                              Center(child: CircularProgressIndicator()),
-                        ),
+                        (state is! ShopRegisterLoadingState)
+                            ? defaultButton(
+                                function: () {
+                                  if (formKey.currentState!.validate()) {
+                                    ShopRegisterCubit.get(context).userRegister(
+                                      name: nameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      phone: phoneController.text,
+                                    );
+                                  }
+                                },
+                                text: 'register',
+                                isUpperCase: true,
+                              )
+                            : Center(child: CircularProgressIndicator()),
                       ],
                     ),
                   ),

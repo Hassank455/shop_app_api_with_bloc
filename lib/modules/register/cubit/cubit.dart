@@ -10,13 +10,13 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates> {
 
   static ShopRegisterCubit get(context) => BlocProvider.of(context);
 
-  ShopLoginModel loginModel;
+  ShopLoginModel? loginModel;
 
   void userRegister({
-    @required String name,
-    @required String email,
-    @required String password,
-    @required String phone,
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
   })
   {
     emit(ShopRegisterLoadingState());
@@ -34,7 +34,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates> {
     {
       print(value.data);
       loginModel = ShopLoginModel.fromJson(value.data);
-      emit(ShopRegisterSuccessState(loginModel));
+      emit(ShopRegisterSuccessState(loginModel!));
     }).catchError((error)
     {
       print(error.toString());

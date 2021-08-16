@@ -27,14 +27,14 @@ class SearchScreen extends StatelessWidget {
                     defaultFormField(
                       controller: searchController,
                       type: TextInputType.text,
-                      validate: (String value) {
+                      validate: (value) {
                         if (value.isEmpty) {
                           return 'enter text to search';
                         }
 
                         return null;
                       },
-                      onSubmit: (String text) {
+                      onSubmit: (text) {
                         SearchCubit.get(context).search(text);
                       },
                       label: 'Search',
@@ -51,13 +51,13 @@ class SearchScreen extends StatelessWidget {
                       Expanded(
                         child: ListView.separated(
                           itemBuilder: (context, index) => buildListProduct(
-                            SearchCubit.get(context).model.data.data[index],
+                            SearchCubit.get(context).model!.data!.data![index],
                             context,
                             isOldPrice: false,
                           ),
                           separatorBuilder: (context, index) => myDivider(),
                           itemCount:
-                              SearchCubit.get(context).model.data.data.length,
+                              SearchCubit.get(context).model!.data!.data!.length,
                         ),
                       ),
                   ],
